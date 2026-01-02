@@ -1,8 +1,9 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+/* @tailwind directives require Tailwind CSS processing. Uncomment if using Tailwind CLI or PostCSS. */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
 
 @layer base {
   :root {
@@ -120,50 +121,69 @@
 
 @layer base {
   * {
-    @apply border-border;
+    border-color: hsl(var(--border));
   }
 
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
     font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-semibold tracking-tight;
+    font-weight: 600;
+    letter-spacing: -0.015em;
   }
 }
 
 @layer components {
   .glass-card {
-    @apply bg-card/80 backdrop-blur-md border border-border/50 shadow-lg;
+    background-color: hsl(var(--card) / 0.8);
+    backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--border) / 0.5);
+    box-shadow: var(--shadow-lg);
   }
 
   .gradient-text {
-    @apply bg-clip-text text-transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
     background-image: var(--gradient-primary);
   }
 
   .btn-glow {
-    @apply relative overflow-hidden;
+    position: relative;
+    overflow: hidden;
   }
 
   .btn-glow::before {
     content: '';
-    @apply absolute inset-0 opacity-0 transition-opacity duration-300;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 0;
+    transition-property: opacity;
+    transition-duration: 300ms;
     background: var(--gradient-accent);
     filter: blur(20px);
   }
 
   .btn-glow:hover::before {
-    @apply opacity-30;
+    opacity: 0.3;
   }
 
   .hover-lift {
-    @apply transition-all duration-300 ease-out;
+    transition-property: all;
+    transition-duration: 300ms;
+    transition-timing-function: ease-out;
   }
 
   .hover-lift:hover {
-    @apply -translate-y-1;
+    transform: translateY(-0.25rem);
     box-shadow: var(--shadow-xl);
   }
 

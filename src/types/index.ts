@@ -1,9 +1,51 @@
 export interface User {
   id: string;
+  username: string;
+  email: string;
+  name?: string; // Compability field
+  first_name?: string;
+  last_name?: string;
+  role: 'user' | 'admin';
+  createdAt?: string;
+  profile?: {
+    phone_number: string | null;
+    profile_picture: string | null;
+    address: string | null;
+    role: string;
+    is_email_verified: boolean;
+  };
+}
+
+export interface AuthResponse {
+  access: string;
+  refresh: string;
+  user: User;
+}
+
+export interface RegisterPayload {
   name: string;
   email: string;
-  role: 'user' | 'admin';
-  createdAt: string;
+  password: string;
+}
+
+export interface LoginPayload {
+  email: string;
+  password: string;
+}
+
+export interface VerifyOtpPayload {
+  email: string;
+  otp_code: string;
+}
+
+export interface ForgotPasswordPayload {
+  email: string;
+}
+
+export interface ResetPasswordPayload {
+  email: string;
+  otp_code: string;
+  new_password: string;
 }
 
 export interface Product {
@@ -57,6 +99,16 @@ export interface Address {
 export interface PaymentIntent {
   clientSecret: string;
   paymentIntentId: string;
+}
+
+export interface EditProductPayload {
+  name?: string;
+  sku?: string;
+  description?: string;
+  price?: number;
+  stock?: number;
+  status?: 'active' | 'inactive';
+  image?: string;
 }
 
 export interface BkashPayment {

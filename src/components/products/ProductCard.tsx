@@ -16,9 +16,9 @@ export function ProductCard({ product }: ProductCardProps) {
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     if (product.stock === 0) return;
-    
+
     addItem(product);
     toast({
       title: 'Added to cart',
@@ -30,52 +30,52 @@ export function ProductCard({ product }: ProductCardProps) {
 
   return (
     <div className="group relative overflow-hidden rounded-xl border border-border bg-card transition-all duration-300 hover:border-primary/30 hover:shadow-lg">
-      {/* Image */}
-      <Link to={`/products/${product.id}`} className="block">
-        <div className="relative aspect-square overflow-hidden bg-secondary/30">
+      {/* Image Container */}
+      <div className="relative aspect-square overflow-hidden bg-secondary/30">
+        <Link to={`/products/${product.id}`} className="block h-full w-full">
           <img
             src={product.image}
             alt={product.name}
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
-          {isOutOfStock && (
-            <div className="absolute inset-0 flex items-center justify-center bg-background/80">
-              <span className="rounded-full bg-destructive px-4 py-1 text-sm font-medium text-destructive-foreground">
-                Out of Stock
-              </span>
-            </div>
-          )}
-          
-          {/* Quick Actions */}
-          <div className="absolute bottom-4 left-4 right-4 flex gap-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
-            <Button
-              variant="secondary"
-              size="sm"
-              className="flex-1 bg-background/90 backdrop-blur-sm"
-              asChild
-            >
-              <Link to={`/products/${product.id}`}>
-                <Eye className="mr-1 h-4 w-4" />
-                View
-              </Link>
-            </Button>
-            <Button
-              variant="accent"
-              size="sm"
-              className="flex-1"
-              onClick={handleAddToCart}
-              disabled={isOutOfStock}
-            >
-              <ShoppingCart className="mr-1 h-4 w-4" />
-              Add
-            </Button>
+        </Link>
+        {isOutOfStock && (
+          <div className="absolute inset-0 flex items-center justify-center bg-background/80">
+            <span className="rounded-full bg-destructive px-4 py-1 text-sm font-medium text-destructive-foreground">
+              Out of Stock
+            </span>
           </div>
+        )}
+
+        {/* Quick Actions */}
+        <div className="absolute bottom-4 left-4 right-4 flex gap-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <Button
+            variant="secondary"
+            size="sm"
+            className="flex-1 bg-background/90 backdrop-blur-sm"
+            asChild
+          >
+            <Link to={`/products/${product.id}`}>
+              <Eye className="mr-1 h-4 w-4" />
+              View
+            </Link>
+          </Button>
+          <Button
+            variant="accent"
+            size="sm"
+            className="flex-1"
+            onClick={handleAddToCart}
+            disabled={isOutOfStock}
+          >
+            <ShoppingCart className="mr-1 h-4 w-4" />
+            Add
+          </Button>
         </div>
-      </Link>
+      </div>
 
       {/* Content */}
       <div className="p-4">
-        <Link to={`/products/${product.id}`}>
+        <Link to={`/products/${product.id}`} className="block">
           <p className="mb-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
             {product.sku}
           </p>
@@ -86,7 +86,7 @@ export function ProductCard({ product }: ProductCardProps) {
             {product.description}
           </p>
         </Link>
-        
+
         <div className="flex items-center justify-between">
           <span className="text-lg font-bold text-foreground">
             ${product.price.toFixed(2)}

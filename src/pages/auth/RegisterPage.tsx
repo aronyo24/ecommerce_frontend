@@ -14,14 +14,14 @@ export default function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   const { register } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!name || !email || !password || !confirmPassword) {
       toast({
         title: 'Validation Error',
@@ -50,14 +50,14 @@ export default function RegisterPage() {
     }
 
     setIsSubmitting(true);
-    
+
     try {
-      await register(name, email, password);
+      await register({ name, email, password });
       toast({
-        title: 'Account created!',
-        description: 'Welcome to ShopFlow. Start exploring our products.',
+        title: 'OTP Sent!',
+        description: 'Please check your email for the verification code.',
       });
-      navigate('/');
+      navigate(`/auth/verify-otp?email=${encodeURIComponent(email)}`);
     } catch (error) {
       toast({
         title: 'Registration Failed',

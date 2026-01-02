@@ -12,17 +12,17 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   const { login } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
   const location = useLocation();
-  
+
   const from = (location.state as { from?: { pathname: string } })?.from?.pathname || '/';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email || !password) {
       toast({
         title: 'Validation Error',
@@ -33,15 +33,24 @@ export default function LoginPage() {
     }
 
     setIsSubmitting(true);
-    
+
     try {
-      await login(email, password);
+      await login({ email, password });
       toast({
         title: 'Welcome back!',
         description: 'You have been logged in successfully.',
       });
       navigate(from, { replace: true });
-    } catch (error) {
+    } catch (error: any) {
+      if (error.message?.includes('not verified')) {
+        toast({
+          title: 'Account Unverified',
+          description: 'Please verify your account first.',
+          variant: 'destructive',
+        });
+        navigate(`/auth/verify-otp?email=${encodeURIComponent(email)}`);
+        return;
+      }
       toast({
         title: 'Login Failed',
         description: error instanceof Error ? error.message : 'Invalid credentials.',
@@ -73,16 +82,6 @@ export default function LoginPage() {
             </p>
           </div>
 
-          {/* Demo Credentials */}
-          <div className="mb-6 rounded-lg border border-border bg-secondary/50 p-4">
-            <p className="mb-2 text-sm font-medium">Demo Credentials:</p>
-            <div className="space-y-1 text-sm text-muted-foreground">
-              <p>User: <code className="rounded bg-secondary px-1">user@example.com</code></p>
-              <p>Admin: <code className="rounded bg-secondary px-1">admin@example.com</code></p>
-              <p>Password: <code className="rounded bg-secondary px-1">password</code></p>
-            </div>
-          </div>
-
           {/* Form */}
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
@@ -100,9 +99,9 @@ export default function LoginPage() {
             <div className="space-y-2">
               <div className="flex items-center justify-between">
                 <Label htmlFor="password">Password</Label>
-                <a href="#" className="text-sm text-primary hover:underline">
+                <Link to="/auth/forgot-password" className="text-sm text-primary hover:underline">
                   Forgot password?
-                </a>
+                </Link>
               </div>
               <div className="relative">
                 <Input
